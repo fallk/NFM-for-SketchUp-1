@@ -1,5 +1,5 @@
 # NFM Exporter for SketchUp
-# Jan 2013 jim.foltz@gmail.com
+# Aug 2015 / Originally created by jim.foltz@gmail.com
 
 # NFM: Need for Madness (http://www.needformadness.com/)
 
@@ -16,6 +16,9 @@
 #     * glass
 #     * flash
 #     * glow
+#     * noOutline
+#     * far
+#     * near
 #
 # Note : Default wheels and physics ar included.
 #
@@ -184,11 +187,20 @@ module JF
       end
       if matname[/flash/i]
         #out << "// flash\n"
-        out << "gr(-18) // flash\n"
+        out << "gr(-18) //flash\n"
       end
       if matname[/glow/i]
         #out << "// glow\n"
         out << "gr(-10) //glow\n"
+      end
+      if matname[/noOutline/i]
+        out << "noOutline() //no outline\n"
+      end
+      if matname[/far/i]
+        out << "gr(10000000000) //far\n"
+      end
+      if matname[/near/i]
+        out << "gr(-10000000000) //near\n"
       end
       out << "\n"
     end
@@ -483,11 +495,11 @@ module JF
     #menu.add_item('NFM Dialog Import') { NFM.dialog_import } 
     menu.add_item('NFM File Import') { NFM.file_import } 
     #menu.add_item('NFM Surface Test') { NFM.surface_test } 
-    if DEBUG
-      menu.add_separator
-      menu.add_item('NFM Round Verts') { NFM.round_vertices } 
-      menu.add_item("View Log") { UI.openURL(LOG_FILE) }
-    end
+    #if DEBUG
+    menu.add_separator
+    menu.add_item('NFM Round Verts') { NFM.round_vertices } 
+    menu.add_item("View Log") { UI.openURL(LOG_FILE) }
+    #end
 
   end # module NFM
 end # module JF
