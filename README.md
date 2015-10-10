@@ -16,17 +16,17 @@ The NFM plugins is a single-file. In a nutshell, you just put the file in Sketch
 
     For Google SketchUp 8 on Windows, plugins are located here:
 
-        `C:\Program Files(x86)\Google\Google SketchUp 8\Plugins\`
+        C:\Program Files(x86)\Google\Google SketchUp 8\Plugins\
        
     For Trimble SketchUp 2013 (Make or Pro), plugins 
     
-    	`C:\Program Files (x86)\SketchUp\SketchUp 2013\Plugins\`
+    	C:\Program Files (x86)\SketchUp\SketchUp 2013\Plugins\
 
     (You will need Admin priviledges)    
     
 	and on OSX:
 
-        `/Library/Application Support/Google SketchUp 8/SketchUp/Plugins/`
+        /Library/Application Support/Google SketchUp 8/SketchUp/Plugins/
 
 * Step 3 -
     Restart SketchUp. The plugin will be in the **Plugins > Need for Madness** menu.
