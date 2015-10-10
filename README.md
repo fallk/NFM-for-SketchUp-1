@@ -10,7 +10,7 @@ Latest Version: **0.6.0**
 The NFM plugins is a single-file. In a nutshell, you just put the file in SketchUps' Plugins folder.
 
 * Step 1 -
-    Download the [nfm-exporter.rb](https://raw.github.com/jimfoltz/NFM-for-SketchUp/master/nfm-exporter.rb) file. (Right-click link, select the *Save  As* option.
+    Download the [nfm-exporter.rb](https://raw.github.com/jimfoltz/NFM-for-SketchUp/master/nfm-exporter.rb) file. (Right-click link, select the *Save  As* option).
 
 * Step 2 - Move or copy the `nfm-exporter.rb` file to your SketchUp/Plugins folder.
 
@@ -29,7 +29,7 @@ The NFM plugins is a single-file. In a nutshell, you just put the file in Sketch
         `/Library/Application Support/Google SketchUp 8/SketchUp/Plugins/`
 
 * Step 3 -
-    Restart SketchUp. The plugin will be in the **Plugins > Need for Maddness** menu.
+    Restart SketchUp. The plugin will be in the **Plugins > Need for Madness** menu.
 
 ## Creating a Model ##
 
@@ -57,10 +57,8 @@ Multiple special names can be used for any material, separated by spaces.
 
 ## Exporting Car Codes ##
 
-* Select *Show Code* from SketchUp's **Plugins > Need for Madness > Show Code**
-menu item.
+* Select *Show Code* from SketchUp's **Plugins > Need for Madness > Show Code** menu item.
 * Copy and paste the code into the NFM Car Maker code editor.
-* Press Save & Preview
+* Press Save & Preview.
 
 If a surface is selected, only the selected surface is displayed in the dialog. Otherwise, the plugin tries to generate the polys for every surface in the model.
-
