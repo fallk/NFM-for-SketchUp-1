@@ -14,13 +14,21 @@ The NFM plugins is a single-file. In a nutshell, you just put the file in Sketch
 
 * Step 2 - Move or copy the `nfm-exporter.rb` file to your SketchUp/Plugins folder.
 
-    For Google SketchUp 8 on Windows, plugins are located here:
+    For SketchUp on Windows, plugins are located here:
 
-        C:\Program Files(x86)\Google\Google SketchUp 8\Plugins\
-       
-    For Trimble SketchUp 2013 (Make or Pro), plugins 
-    
-    	C:\Program Files (x86)\SketchUp\SketchUp 2013\Plugins\
+	* SketchUp 2016: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2016\SketchUp\Plugins`
+	
+	* SketchUp 2015: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2015\SketchUp\Plugins`
+	
+	* SketchUp 2014: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2014\SketchUp\Plugins`
+	
+	* SketchUp 2013:
+		* `C:\Program Files\SketchUp\SketchUp 2013\Plugins` (32-bit)
+		* `C:\Program Files (x86)\SketchUp\SketchUp 2013\Plugins` (64-bit)
+	
+	* SketchUp 8 and older:
+		* `C:\Program Files\Google\Google SketchUp #\Plugins` (32-bit)
+		* `C:\Program Files (x86)\Google\Google SketchUp #\Plugins` (64-bit)
 
     (You will need Admin priviledges)    
     
