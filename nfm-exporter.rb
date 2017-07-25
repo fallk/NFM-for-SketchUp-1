@@ -19,6 +19,8 @@
 #
 # Note : Default wheels and physics ar included.
 #
+
+# noinspection RubyResolve
 require 'sketchup'
 
 module JF
@@ -30,20 +32,20 @@ module JF
 
     if DEBUG
       LOG_FILE = "#{ENV['APPDATA']}/JimFoltz/SketchUp/NFM/log.txt"
-      if not File.exists?("#{ENV['APPDATA']}/JimFoltz/SketchUp/NFM")
+      unless File.exists?("#{ENV['APPDATA']}/JimFoltz/SketchUp/NFM")
         Dir.mkdir("#{ENV['APPDATA']}/JimFoltz/SketchUp/NFM")
       end
-      File.open("#{LOG_FILE}", "w") {|f| f.puts(Time.now)}
+      File.open("#{LOG_FILE}", 'w') {|f| f.puts(Time.now)}
     end
 
     def self.log(s)
       if DEBUG
-        File.open("#{LOG_FILE}", "a") {|f| f.puts(s)}
+        File.open("#{LOG_FILE}", 'a') {|f| f.puts(s)}
       end
     end
 
     def self.main
-      log "in main"
+      log 'in main'
       model = Sketchup.active_model
       sel = model.selection
       # Flip each vertex position on export to match NFM axes
@@ -51,7 +53,7 @@ module JF
       out = ''
       if sel.length > 0
         edges = sel.grep(Sketchup::Edge)
-        if (edges.length == sel.length)
+        if edges.length == sel.length
           export_selected_edges(edges, out)
         end
       end
@@ -60,7 +62,7 @@ module JF
     end
 
     def self.dialog(out)
-      log "in dialog"
+      log 'in dialog'
       if @wd and @wd.visible?
         @wd.close
       end
@@ -96,10 +98,10 @@ module JF
     end
 
     def self.export(out)
-      log "in export" 
+      log 'in export'
       model    = Sketchup.active_model
       entities = model.active_entities
-      log "all_surfaces"
+      log 'all_surfaces'
       surfaces = all_surfaces
       if surfaces.size > 210
         UI.messagebox("Model has #{surfaces.size} surfaces.")
@@ -127,7 +129,7 @@ module JF
         out << '</p>'
         out << "\n"
         out << "\n"
-      end # surfaces.each 
+      end # surfaces.each
 
       # Output default wheels, stats and physics
       #out << "// Default Wheels\ngwgr(0)\nrims(140,140,140,18,10)\n"
@@ -150,20 +152,20 @@ module JF
     def self.export_vertices(verts, out)
       # Try rotate verts to fix concave surfaces in nfm
       #10.times {verts.push(verts.pop)}
-        verts.each do |vert|
-          pos = vert.position
-          pos.transform!(@tr)
-          pos = pos.to_a.map{|e| e.round}
-          out << 'p(' << pos.join(',') << ')' 
-          out << "\n"
-        end
+      verts.each do |vert|
+        pos = vert.position
+        pos.transform!(@tr)
+        pos = pos.to_a.map{|e| e.round}
+        out << 'p(' << pos.join(',') << ')'
+        out << "\n"
+      end
     end
 
     def self.do_color(surface, out)
 
       face = surface[0]
       #out << "c(255,255,255)\n"
-      if mat = face.material
+      if (mat = face.material)
         color = mat.color
         matname = mat.display_name
       else
@@ -205,9 +207,15 @@ module JF
       import(lines)
     end
 
+    def rgb_to_hex(r,g,b)
+      ashex = ""
+      [r,g,b].each {|component| ashex << component.to_s(16) }
+      ashex.to_i(16)
+    end
+
     def self.import(lines)
       model = Sketchup.active_model
-      model.start_operation("NFM Import from Dialog", true)
+      model.start_operation('NFM Import from Dialog', true)
       if model.active_entities.length > 0
         grp = model.active_entities.add_group
         ents = grp.entities
@@ -219,12 +227,18 @@ module JF
       in_p = false
       mesh = Geom::PolygonMesh.new
       polygon = []
+      mat_r = 0
+      mat_g = 0
+      mat_b = 0
       #IO.foreach(file) do |line|
       lines.each do |line|
         #p line
         line.strip!
         next if line.empty?
         if line[/<p>/]
+          mat_r = 0
+          mat_g = 0
+          mat_b = 0
           in_p = true
           mesh = Geom::PolygonMesh.new
           polygon.clear
@@ -232,20 +246,27 @@ module JF
         end
         if line[/<\/p>/]
           in_p = false
-          if not polygon.empty?
+          unless polygon.empty?
             mesh.add_polygon(polygon)
-            ents.add_faces_from_mesh(mesh, 0)
+            c = rgb_to_hex(mat_r, mat_g, mat_b)
+            ents.add_faces_from_mesh(mesh, 0, c, c)
           end
           next
         end
         if in_p
           if (m = /p\((-?\d+),(-?\d+),(-?\d+)/.match(line))
-              #p line
-              x = m[1].to_i
-              y = m[2].to_i
-              z = m[3].to_i
-              polygon << [x, y, z]
-              #mesh.add_point([x, y, z])
+            #p line
+            x = m[1].to_i
+            y = m[2].to_i
+            z = m[3].to_i
+            polygon << [x, y, z]
+            #mesh.add_point([x, y, z])
+          end
+          if (m = /c\((-?\d+),(-?\d+),(-?\d+)/.match(line))
+            #c line
+            mat_r = m[1].to_i
+            mat_g = m[2].to_i
+            mat_b = m[3].to_i
           end
         end
       end
@@ -266,7 +287,7 @@ module JF
       visible_edges = []
       surface.each do |face|
         face.outer_loop.edges.each do |edge|
-          if not edge.soft?
+          unless edge.soft?
             visible_edges << edge
           end
         end
@@ -275,12 +296,12 @@ module JF
     end
 
     def self.surface_from_face(face)
-      log "in surface_from_face"
+      log 'in surface_from_face'
       surface = adjacent_faces(face)
     end
 
     def self.adjacent_faces(face, faces_found = [])
-      log "in adjacent_faces"
+      log 'in adjacent_faces'
       @lvl += 1
       log "level #{@lvl}"
       faces_found << face if faces_found.empty?
@@ -296,7 +317,7 @@ module JF
     end
 
     def self.all_surfaces
-      log "in all_surfaces"
+      log 'in all_surfaces'
       model = Sketchup.active_model
       if model.selection.length == 0
         all_faces = model.entities.grep(Sketchup::Face)
@@ -304,12 +325,12 @@ module JF
         all_faces = model.selection.grep(Sketchup::Face)
       end
       surfaces = []
-      while(all_faces.size > 0)
+      while all_faces.size > 0
         surface = surface_from_face(all_faces[0])
         surfaces << surface
         all_faces = all_faces - surface
       end
-      log "out all_surfaces"
+      log 'out all_surfaces'
       surfaces
     end
 
@@ -458,7 +479,7 @@ module JF
         rvert = [pos.x.round, pos.y.round, pos.z.round]
         vecs << (pos.vector_to(rvert))
       end
-      warn "mis-matched verts/vecs" unless verts.length == vecs.length
+      warn 'mis-matched verts/vecs' unless verts.length == vecs.length
       model.entities.transform_by_vectors(verts, vecs)
       model.active_view.refresh
     end
@@ -480,13 +501,13 @@ module JF
 
     menu = UI.menu('Plugins').add_submenu('Need For Madness')
     menu.add_item('Show Code') { NFM.main }
-    #menu.add_item('NFM Dialog Import') { NFM.dialog_import } 
-    menu.add_item('NFM File Import') { NFM.file_import } 
-    #menu.add_item('NFM Surface Test') { NFM.surface_test } 
+    #menu.add_item('NFM Dialog Import') { NFM.dialog_import }
+    menu.add_item('NFM File Import') { NFM.file_import }
+    #menu.add_item('NFM Surface Test') { NFM.surface_test }
     if DEBUG
       menu.add_separator
-      menu.add_item('NFM Round Verts') { NFM.round_vertices } 
-      menu.add_item("View Log") { UI.openURL(LOG_FILE) }
+      menu.add_item('NFM Round Verts') { NFM.round_vertices }
+      menu.add_item('View Log') { UI.openURL(LOG_FILE) }
     end
 
   end # module NFM
