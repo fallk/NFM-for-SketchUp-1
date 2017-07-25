@@ -1,5 +1,5 @@
 # NFM Exporter for SketchUp
-# Aug 2015 / Originally created by jim.foltz@gmail.com
+# July 2017 / Originally created by jim.foltz@gmail.com
 
 # NFM: Need for Madness (http://www.needformadness.com/)
 
@@ -20,14 +20,14 @@
 #     * far
 #     * near
 #
-# Note : Default wheels and physics ar included.
+# Note : Default wheels and physics are included.
 #
 
 require 'sketchup'
 
 module JimFoltz
   module NFM
-    @version = '0.5.2'
+    @version = '0.7.0'
     @model = Sketchup.active_model
     @lvl = 0
     DEBUG = false
@@ -180,10 +180,10 @@ module JimFoltz
       if matname[/glass/i]
         out << "glass()\n"
       end
-      if matname[/lightf/i]
+      if matname[/lightf/i] or matname[/frontL/i]
         out << "lightF\n"
       end
-      if matname[/lightb/i]
+      if matname[/lightb/i] or matname[/backL/i]
         out << "lightB\n"
       end
       if matname[/flash/i]

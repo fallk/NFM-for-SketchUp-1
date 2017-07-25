@@ -3,9 +3,9 @@ NFM-for-SketchUp
 
 [Need for Madness](http://www.needformadness.com/developer/) is a fun, fast-paced car game written in Java. This SketchUp plugin helps creating vehicles for the game.
 
-Latest Version: **0.6.0**
+Latest Version: **0.7.0**
 
-## Plugin Installation ##
+## Plugin Installation
 
 The NFM plugins is a single-file. In a nutshell, you just put the file in SketchUps' Plugins folder.
 
@@ -39,11 +39,11 @@ The NFM plugins is a single-file. In a nutshell, you just put the file in Sketch
 * Step 3 -
     Restart SketchUp. The plugin will be in the **Plugins > Need for Madness** menu.
 
-## Creating a Model ##
+## Creating a Model
 
 Download this [Sample SketchUp Model](http://sketchup.google.com/3dwarehouse/details?mid=196de521c5d5c3f0b73ce25f042b849a) to get started.
 
-### Things to note: ###
+### Things to note:
 
 * The car code is generated strictly from Faces - other SketchUp entities such as Groups and Components may be in the model, but are ignored.
 * The car is centered (more or less) on the origin.
@@ -63,10 +63,31 @@ Download this [Sample SketchUp Model](http://sketchup.google.com/3dwarehouse/det
 
 Multiple special names can be used for any material, separated by spaces.
 
-## Exporting Car Codes ##
+## Exporting Car Codes
 
 * Select *Show Code* from SketchUp's **Plugins > Need for Madness > Show Code** menu item.
 * Copy and paste the code into the NFM Car Maker code editor.
 * Press Save & Preview.
 
 If a surface is selected, only the selected surface is displayed in the dialog. Otherwise, the plugin tries to generate the polys for every surface in the model.
+
+## Changelog
+
+### July 2017 (0.7.0)
+ * Added color support when importing.
+   * Materials will have a prefix 'nfm'
+     * Names are currently fucked
+ * Restored support for legacy frontL and backL materials
+ * Added RubyMine project
+   * Will probably not work for you
+ * Disabled debug features
+
+### Aug 2015 (0.6.0)
+ * Added new materials
+   * noOutline
+   * far
+   * near
+ * Enabled debug features
+ 
+### Jan 2013 (0.5.2)
+ * Original version by Jim
