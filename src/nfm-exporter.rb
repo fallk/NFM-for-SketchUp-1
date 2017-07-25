@@ -73,7 +73,7 @@ end
 
 module JimFoltz
   module NFM
-    @version = '0.7.1'
+    @version = '0.7.2'
     @model = Sketchup.active_model
     @lvl = 0
     DEBUG = false
@@ -142,13 +142,13 @@ module JimFoltz
           <script>ta.focus(); ta.select();r=ta.createTextRange();r.execCommand('copy');</script>
         </html>
       }
-      @wd.add_action_callback('refresh') do |d, a|
+      @wd.add_action_callback('refresh') do |_, _|
         JimFoltz::NFM.main
       end
-      @wd.add_action_callback('import') do |d, a|
+      @wd.add_action_callback('import') do |_, _|
         JimFoltz::NFM.dialog_import
       end
-      @wd.add_action_callback('clipboard') do |d, a|
+      @wd.add_action_callback('clipboard') do |_, _|
         JimFoltz::NFM.copy_to_clipboard
       end
       @wd.show
@@ -157,7 +157,7 @@ module JimFoltz
     def self.export(out)
       log 'in export'
       model    = Sketchup.active_model
-      entities = model.active_entities
+      #entities = model.active_entities
       log 'all_surfaces'
       surfaces = all_surfaces
       if surfaces.size > 210
@@ -271,7 +271,7 @@ module JimFoltz
     end
 
     def self.file_import
-      file = UI.openpanel
+      file = UI.openpanel('Open RAD File', 'c:/', 'RAD File|*.rad||')
       lines = IO.readlines(file)
       dialog(lines)
       import(lines)
@@ -297,9 +297,21 @@ module JimFoltz
       in_p = false
       mesh = Geom::PolygonMesh.new
       polygon = []
+
+      # color
       mat_r = 0
       mat_g = 0
       mat_b = 0
+
+      # scale
+      div = 1.0
+      wid = 1.0
+      scale_x = 1.0
+      scale_y = 1.0
+      scale_z = 1.0
+
+      # TODO: gr/fs/glass/lightF/lightB/light()
+
       #IO.foreach(file) do |line|
       lines.each do |line|
         #p line
@@ -325,16 +337,28 @@ module JimFoltz
           end
           next
         end
+        if (m = /div\((-?\d+)\)/.match(line))
+          div = m[1].to_f / 10.0
+        elsif (m = /idiv\((-?\d+)\)/.match(line))
+          div = m[1].to_f / 100.0
+        elsif (m = /iwid\((-?\d+)\)/.match(line))
+          wid = m[1].to_f / 100.0
+        elsif (m = /ScaleX\((-?\d+)\)/.match(line))
+          scale_x = m[1].to_f / 100.0
+        elsif (m = /ScaleY\((-?\d+)\)/.match(line))
+          scale_y = m[1].to_f / 100.0
+        elsif (m = /ScaleZ\((-?\d+)\)/.match(line))
+          scale_z = m[1].to_f / 100.0
+        end
         if in_p
           if (m = /p\((-?\d+),(-?\d+),(-?\d+)/.match(line))
             #p line
-            x = m[1].to_i
-            y = m[2].to_i
-            z = m[3].to_i
-            polygon << [x, y, z]
+            x = m[1].to_i * div * wid * scale_x
+            y = m[2].to_i * div * scale_y
+            z = m[3].to_i * div * scale_z
+            polygon << [x.to_i, y.to_i, z.to_i]
             #mesh.add_point([x, y, z])
-          end
-          if (m = /c\((-?\d+),(-?\d+),(-?\d+)/.match(line))
+          elsif (m = /c\((-?\d+),(-?\d+),(-?\d+)/.match(line))
             #c line
             mat_r = m[1].to_i
             mat_g = m[2].to_i
@@ -539,7 +563,7 @@ module JimFoltz
       edges = model.entities.grep(Sketchup::Edge)
       edges.each do |edge|
         edge.vertices.each do |vertex|
-          if not all_verts.include?(vertex)
+          unless all_verts.include?(vertex)
             all_verts[vertex] = vertex.position
           end
         end
