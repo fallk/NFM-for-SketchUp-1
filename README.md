@@ -3,33 +3,41 @@ NFM-for-SketchUp
 
 [Need for Madness](http://www.needformadness.com/developer/) is a fun, fast-paced car game written in Java. This SketchUp plugin helps creating vehicles for the game.
 
-Latest Version: **0.5.2**
+Latest Version: **0.6.0**
 
 ## Plugin Installation ##
 
 The NFM plugins is a single-file. In a nutshell, you just put the file in SketchUps' Plugins folder.
 
 * Step 1 -
-    Download the [nfm-exporter.rb](https://raw.github.com/jimfoltz/NFM-for-SketchUp/master/nfm-exporter.rb) file. (Right-click link, select the *Save  As* option.
+    Download the [nfm-exporter.rb](https://raw.github.com/jimfoltz/NFM-for-SketchUp/master/nfm-exporter.rb) file. (Right-click link, select the *Save  As* option).
 
 * Step 2 - Move or copy the `nfm-exporter.rb` file to your SketchUp/Plugins folder.
 
-    For Google SketchUp 8 on Windows, plugins are located here:
+    For SketchUp on Windows, plugins are located here:
 
-        `C:\Program Files(x86)\Google\Google SketchUp 8\Plugins\`
-       
-    For Trimble SketchUp 2013 (Make or Pro), plugins 
-    
-    	`C:\Program Files (x86)\SketchUp\SketchUp 2013\Plugins\`
+	* SketchUp 2016: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2016\SketchUp\Plugins`
+	
+	* SketchUp 2015: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2015\SketchUp\Plugins`
+	
+	* SketchUp 2014: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2014\SketchUp\Plugins`
+	
+	* SketchUp 2013:
+		* `C:\Program Files\SketchUp\SketchUp 2013\Plugins` (32-bit)
+		* `C:\Program Files (x86)\SketchUp\SketchUp 2013\Plugins` (64-bit)
+	
+	* SketchUp 8 and older:
+		* `C:\Program Files\Google\Google SketchUp #\Plugins` (32-bit)
+		* `C:\Program Files (x86)\Google\Google SketchUp #\Plugins` (64-bit)
 
     (You will need Admin priviledges)    
     
 	and on OSX:
 
-        `/Library/Application Support/Google SketchUp 8/SketchUp/Plugins/`
+        /Library/Application Support/Google SketchUp 8/SketchUp/Plugins/
 
 * Step 3 -
-    Restart SketchUp. The plugin will be in the **Plugins > Need for Maddness** menu.
+    Restart SketchUp. The plugin will be in the **Plugins > Need for Madness** menu.
 
 ## Creating a Model ##
 
@@ -49,15 +57,16 @@ Download this [Sample SketchUp Model](http://sketchup.google.com/3dwarehouse/det
  * glow
  * lightF
  * lightB
+ * noOutline
+ * far
+ * near
 
 Multiple special names can be used for any material, separated by spaces.
 
 ## Exporting Car Codes ##
 
-* Select *Show Code* from SketchUp's **Plugins > Need for Madness > Show Code**
-menu item.
+* Select *Show Code* from SketchUp's **Plugins > Need for Madness > Show Code** menu item.
 * Copy and paste the code into the NFM Car Maker code editor.
-* Press Save & Preview
+* Press Save & Preview.
 
 If a surface is selected, only the selected surface is displayed in the dialog. Otherwise, the plugin tries to generate the polys for every surface in the model.
-

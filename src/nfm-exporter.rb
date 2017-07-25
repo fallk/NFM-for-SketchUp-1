@@ -1,5 +1,5 @@
 # NFM Exporter for SketchUp
-# Jan 2013 jim.foltz@gmail.com
+# Aug 2015 / Originally created by jim.foltz@gmail.com
 
 # NFM: Need for Madness (http://www.needformadness.com/)
 
@@ -16,6 +16,9 @@
 #     * glass
 #     * flash
 #     * glow
+#     * noOutline
+#     * far
+#     * near
 #
 # Note : Default wheels and physics ar included.
 #
@@ -185,11 +188,20 @@ module JimFoltz
       end
       if matname[/flash/i]
         #out << "// flash\n"
-        out << "gr(-18) // flash\n"
+        out << "gr(-18) //flash\n"
       end
       if matname[/glow/i]
         #out << "// glow\n"
         out << "gr(-10) //glow\n"
+      end
+      if matname[/noOutline/i]
+        out << "noOutline() //no outline\n"
+      end
+      if matname[/far/i]
+        out << "gr(10000000000) //far\n"
+      end
+      if matname[/near/i]
+        out << "gr(-10000000000) //near\n"
       end
       out << "\n"
     end
