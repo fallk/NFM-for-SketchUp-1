@@ -3,7 +3,7 @@ NFM-for-SketchUp
 
 [Need for Madness](http://www.needformadness.com/developer/) is a fun, fast-paced car game written in Java. This SketchUp plugin helps creating vehicles for the game.
 
-Latest Version: **0.7.0**
+Latest Version: **0.7.1**
 
 ## Plugin Installation
 
@@ -17,15 +17,11 @@ The NFM plugins is a single-file. In a nutshell, you just put the file in Sketch
     For SketchUp on Windows, plugins are located here:
 
 	* SketchUp 2016: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2016\SketchUp\Plugins`
-	
 	* SketchUp 2015: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2015\SketchUp\Plugins`
-	
 	* SketchUp 2014: `C:\Users\YOUR USERNAME\AppData\Roaming\SketchUp\SketchUp 2014\SketchUp\Plugins`
-	
 	* SketchUp 2013:
 		* `C:\Program Files\SketchUp\SketchUp 2013\Plugins` (32-bit)
 		* `C:\Program Files (x86)\SketchUp\SketchUp 2013\Plugins` (64-bit)
-	
 	* SketchUp 8 and older:
 		* `C:\Program Files\Google\Google SketchUp #\Plugins` (32-bit)
 		* `C:\Program Files (x86)\Google\Google SketchUp #\Plugins` (64-bit)
@@ -66,12 +62,32 @@ Multiple special names can be used for any material, separated by spaces.
 ## Exporting Car Codes
 
 * Select *Show Code* from SketchUp's **Plugins > Need for Madness > Show Code** menu item.
+  * Click *Refresh* if you need to.
 * Copy and paste the code into the NFM Car Maker code editor.
 * Press Save & Preview.
 
 If a surface is selected, only the selected surface is displayed in the dialog. Otherwise, the plugin tries to generate the polys for every surface in the model.
 
+# Extras
+
+## Importing Car Codes
+
+* Select *Show Code* from SketchUp's **Plugins > Need for Madness > Show Code** menu item.
+* Paste your existing code into the text box and click 'Import'
+
+### Caveats
+
+* Scale will be lost.
+* Attributes/collision will be lost.
+
 ## Changelog
+
+### July 2017 (0.7.1)
+ * Added clipboard copy support.
+   * Only works on Windows and Mac.
+   * Newlines are duplicated. I have no idea how to fix this.
+ * Indented HTML for code window
+   * This has no effect on your user experience, only the backend.
 
 ### July 2017 (0.7.0)
  * Added color support when importing.

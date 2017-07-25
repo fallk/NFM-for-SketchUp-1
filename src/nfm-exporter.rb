@@ -25,9 +25,55 @@
 
 require 'sketchup'
 
+module Clipboard
+
+  # noinspection RubyClassModuleNamingConvention
+  module OS
+    def OS.windows?
+      (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+    end
+
+    def OS.mac?
+      (/darwin/ =~ RUBY_PLATFORM) != nil
+    end
+
+    def OS.unix?
+      !OS.windows?
+    end
+
+    def OS.linux?
+      OS.unix? and not OS.mac?
+    end
+  end
+
+  def self.copy(input)
+    str = input.to_s
+    if OS.windows?
+      clip(str)
+    elsif OS.mac?
+      pbcopy(str)
+    end
+
+  end
+
+  def self.pbcopy(str)
+    IO.popen('pbcopy', 'w') { |f| f << str }
+    str
+  end
+
+  def self.clip(str)
+    IO.popen('clip', 'w') { |f| f << str }
+    str
+  end
+
+  def self.pbpaste
+    `pbpaste`
+  end
+end
+
 module JimFoltz
   module NFM
-    @version = '0.7.0'
+    @version = '0.7.1'
     @model = Sketchup.active_model
     @lvl = 0
     DEBUG = false
@@ -71,30 +117,39 @@ module JimFoltz
 
       # Show car code in dialog
       @wd = UI::WebDialog.new("NFM for SketchUp version #{@version}", false, 'JF\\NFM', 350, 500)
-      @wd.set_html  <<-EOS
+      @wd.set_html %{
         <html>
-        <head>
-        <style>
-        .menu {font: menu;}
-        #area{height:90%;width:100%;}</style>
-        </head>
-        <body>
-        Select all, Copy.<br>
-        <div class=menu>
-        <a href="skp:refresh">Refresh</a> |
-        <a href="#" onclick="ta.focus();ta.select();">Select</a> |
-        <a href="skp:import">Import</a>
-        </div>
-        <textarea id=area name=ta cols=40>#{out}</textarea>
-        </body>
-        <script>ta.focus(); ta.select();r=ta.createTextRange();r.execCommand('copy');</script>
+          <head>
+            <style>
+            .menu {
+              font: menu;
+            }
+            #area {
+              height:90%;width:100%;
+            }
+            </style>
+          </head>
+          <body>
+            Select all, Copy.<br>
+            <div class="menu">
+              <a href="skp:refresh">Refresh</a> |
+              <a href="#" onclick="ta.focus();ta.select();">Select</a> |
+              <a href="skp:clipboard">Copy</a> |
+              <a href="skp:import">Import</a>
+            </div>
+            <textarea id="area" name="ta" cols="40">#{out}</textarea>
+          </body>
+          <script>ta.focus(); ta.select();r=ta.createTextRange();r.execCommand('copy');</script>
         </html>
-      EOS
+      }
       @wd.add_action_callback('refresh') do |d, a|
         JimFoltz::NFM.main
       end
       @wd.add_action_callback('import') do |d, a|
         JimFoltz::NFM.dialog_import
+      end
+      @wd.add_action_callback('clipboard') do |d, a|
+        JimFoltz::NFM.copy_to_clipboard
       end
       @wd.show
     end
@@ -209,6 +264,10 @@ module JimFoltz
     def self.dialog_import
       lines = @wd.get_element_value('area').split("\n")
       import(lines)
+    end
+
+    def self.copy_to_clipboard
+      Clipboard.copy(@wd.get_element_value('area'));
     end
 
     def self.file_import
