@@ -97,7 +97,7 @@ If a surface is selected, only the selected surface is displayed in the dialog. 
 ### July 2017 (0.7.0)
  * Added color support when importing.
    * Materials will have a prefix 'nfm'
-     * Names are currently fucked
+     * Names are currently borked
  * Restored support for legacy frontL and backL materials
  * Added RubyMine project
    * Will probably not work for you
